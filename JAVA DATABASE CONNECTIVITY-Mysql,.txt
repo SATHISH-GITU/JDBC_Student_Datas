@@ -1,0 +1,123 @@
+JAVA DATABASE CONNECTIVITY-Mysql,
+Project Mng; SATHISH KUMAR V,
+College: St Josephs college of Engineering.
+
+
+
+import java.sql.*;
+import java.util.*;
+
+public class JDBC_SK {
+	public static void main(String[] args) throws SQLException, ClassNotFoundException {
+		System.out.println(" DATA BASE MANAGEMENT SYSTEM ");
+		System.out.println("Project Mng : Sathish kumar V");
+		Scanner scan=new Scanner(System.in);
+		System.out.println("Different Operation Available");
+		System.out.println("To read Database Press 1");
+		System.out.println("To Update Database Press 2");
+		System.out.println("To Delete Database Press 3");
+		int operation=scan.nextInt();
+		 if(operation==1) {
+			 readdatas();
+		 }else if(operation==2) {
+			 insertdata();
+		 }else if(operation==3) {
+			 Delete();
+			 operation=scan.nextInt();
+			 if(operation == 1) {
+				 readdatas();
+			 }else {
+				 System.out.println("Succesfully Exited with the Exit Code : "+ operation);
+			 }
+		 }
+         
+			   
+		}
+	// reading the data
+	
+	public static void readdatas()throws SQLException, ClassNotFoundException {
+		System.out.println("Database connectivity Assigment ");
+		
+		String server="jdbc:mysql://@localhost:3306/sk2002";
+		String user="root";
+		String password="root123";
+		String querry=("Select * from Newpp");
+		
+		System.out.println("Database Connection Successfull");
+		
+		Connection con= DriverManager.getConnection(server, user, password);
+		Statement state=con.createStatement();
+		ResultSet res=state.executeQuery(querry);
+		
+		
+		while (res.next()){
+			System.out.println("User Id is "+res.getString(1));
+			System.out.println("User Name is "+res.getString(2));
+			System.out.println("User salary is"+res.getDouble(3));
+		};
+		con.close();
+	}
+	// for inserting the data
+	public static void insertdata() throws SQLException, ClassNotFoundException{
+		System.out.println("Inserting the Datas to the Database");
+		String server="jdbc:mysql://@localhost:3306/sk2002";
+		String user="root";
+		String password="root123";
+		Scanner scan=new Scanner(System.in);
+		System.out.println("Enter Student Id : ");
+		String Id=scan.next();
+		System.out.println("Enter Student Name : ");
+		String namee=scan.next();
+		System.out.println("Enter Student Cgpa : ");
+		double Cgpa=scan.nextDouble();
+		System.out.println("Enter Department Name");
+		
+		String Department=scan.next();
+		System.out.println("Opertion started ");
+		
+		String querry=("insert into Newpp values(?,?,?,?)");
+		
+		System.out.println("Database Connection Successfull");
+		
+		Connection con= DriverManager.getConnection(server, user, password);
+//		Statement state=con.createStatement();
+//		int row =state.executeUpdate(query);
+		// simpler Method Using Prepared Statement:
+		PreparedStatement post = con.prepareStatement(querry);
+		post.setString(1, Id);
+		post.setString(2, namee);
+		post.setDouble(3, Cgpa);
+		post.setString(4, Department);
+		int rows = post.executeUpdate();
+		con.close();
+		
+		
+		System.out.println("Number of rows Affected are "+ rows);
+		System.out.print("Updated Successfully Check Your database Now !! ");
+		con.close();
+		
+	}
+	// for Deleting the data
+	public static void Delete()throws SQLException, ClassNotFoundException {
+        System.out.println("Database connected Succesfull : Delete Operation : ");
+        System.out.println("Enter The Id To be Deleted");
+        Scanner scan=new Scanner(System.in);
+        String Id=scan.next();
+		String server="jdbc:mysql://@localhost:3306/sk2002";
+		String user="root";
+		String password="root123";
+		String querry=("delete from Newpp where Id = "+ Id);
+		
+		System.out.println("Database Connection Successfull");
+		
+		Connection con= DriverManager.getConnection(server, user, password);
+		Statement state=con.createStatement();
+		int rows =state.executeUpdate(querry);
+		
+		
+		 System.out.print("Successfully deleted from the Database");
+		 System.out.print("Rows affected :"+ rows);
+		con.close();
+		
+	}
+}
